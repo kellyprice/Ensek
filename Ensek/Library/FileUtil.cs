@@ -7,6 +7,7 @@ namespace Ensek.Library
         public static IEnumerable<MeterReadingViewModel> GetMeterReadings(FileViewModel file)
         {
             var meterReadings = new List<MeterReadingViewModel>();
+            var header = true;
             
             using (var stream = new MemoryStream())
             {
@@ -20,6 +21,13 @@ namespace Ensek.Library
                     {
                         var line = reader.ReadLine();
                         var values = line?.Split(',');
+
+                        if (header)
+                        {
+                            header = false;
+                            
+                            continue;
+                        }
 
                         if (values?.Length > 3)
                         {
